@@ -39,9 +39,38 @@ export default function CreateWizard() {
     setStep((s) => Math.max(s - 1, 1));
   };
 
+  const validate = (): string | null => {
+    if (formData.photoBase64 && formData.photoBase64.length > 2_800_000) {
+      return 'Photo must be under 2MB';
+    }
+    if (formData.reasons && formData.reasons.length > 6) {
+      return 'Maximum 6 reasons allowed';
+    }
+    if (formData.songUrl && formData.songUrl.trim()) {
+      const validPrefixes = [
+        'https://open.spotify.com/',
+        'https://spotify.com/',
+        'https://www.youtube.com/',
+        'https://youtube.com/',
+        'https://youtu.be/',
+        'https://music.youtube.com/',
+      ];
+      if (!validPrefixes.some((p) => formData.songUrl!.startsWith(p))) {
+        return 'Song URL must be a Spotify or YouTube link';
+      }
+    }
+    return null;
+  };
+
   const submit = async () => {
     setSubmitting(true);
     setError('');
+    const validationError = validate();
+    if (validationError) {
+      setError(validationError);
+      setSubmitting(false);
+      return;
+    }
     try {
       const res = await createSite(formData);
       setResult(res);

@@ -1,4 +1,3 @@
-import json
 import os
 from collections import defaultdict
 from contextlib import asynccontextmanager
@@ -56,28 +55,10 @@ async def create_site(
     check_rate_limit(client_ip)
 
     site_id = generate(size=8)
-    reasons_json = json.dumps(site.reasons) if site.reasons else None
 
     await db.execute(
-        """INSERT INTO sites (
-            id, creator_name, partner_name, love_message,
-            photo_base64, photo_caption, how_we_met, favorite_memory,
-            reasons, song_url, pet_name, secret_message
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-        (
-            site_id,
-            site.creator_name,
-            site.partner_name,
-            site.love_message,
-            site.photo_base64,
-            site.photo_caption,
-            site.how_we_met,
-            site.favorite_memory,
-            reasons_json,
-            site.song_url,
-            site.pet_name,
-            site.secret_message,
-        ),
+        "INSERT INTO sites (id, encrypted_data, iv) VALUES (?, ?, ?)",
+        (site_id, site.encrypted_data, site.iv),
     )
     await db.commit()
 
@@ -104,23 +85,10 @@ async def get_site(site_id: str, db: aiosqlite.Connection = Depends(get_db)):
         if datetime.now() > expires:
             raise HTTPException(status_code=410, detail="This valentine has expired")
 
-    reasons = None
-    if row_dict["reasons"]:
-        reasons = json.loads(row_dict["reasons"])
-
     return SiteResponse(
         id=row_dict["id"],
-        creator_name=row_dict["creator_name"],
-        partner_name=row_dict["partner_name"],
-        love_message=row_dict["love_message"],
-        photo_base64=row_dict["photo_base64"],
-        photo_caption=row_dict["photo_caption"],
-        how_we_met=row_dict["how_we_met"],
-        favorite_memory=row_dict["favorite_memory"],
-        reasons=reasons,
-        song_url=row_dict["song_url"],
-        pet_name=row_dict["pet_name"],
-        secret_message=row_dict["secret_message"],
+        encrypted_data=row_dict["encrypted_data"],
+        iv=row_dict["iv"],
         view_count=row_dict["view_count"],
         accepted=row_dict["accepted_at"] is not None,
     )

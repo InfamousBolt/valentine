@@ -59,7 +59,7 @@ export default function SuccessScreen({ url, id, partnerName }: SuccessScreenPro
         </button>
 
         <a
-          href={`/preview/${id}`}
+          href={`/preview/${id}${url.includes('#') ? '#' + url.split('#')[1] : ''}`}
           target="_blank"
           rel="noopener noreferrer"
           className="xp-btn block w-full py-3 text-center no-underline"

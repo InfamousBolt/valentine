@@ -11,7 +11,7 @@ export default function CelebrationOverlay({ partnerName, siteId }: CelebrationO
   const [copied, setCopied] = useState(false);
 
   const shareLink = async () => {
-    const url = `${window.location.origin}/v/${siteId}`;
+    const url = `${window.location.origin}/v/${siteId}${window.location.hash}`;
     try {
       await navigator.clipboard.writeText(url);
     } catch {

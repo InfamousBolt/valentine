@@ -33,3 +33,16 @@ export interface SiteCreatedResponse {
   id: string;
   url: string;
 }
+
+export interface EncryptedSitePayload {
+  encrypted_data: string;
+  iv: string;
+}
+
+export interface EncryptedSiteResponse {
+  id: string;
+  encrypted_data: string;
+  iv: string;
+  view_count: number;
+  accepted: boolean;
+}

@@ -7,7 +7,7 @@ export default function PreviewPage() {
   const [copied, setCopied] = useState(false);
 
   const copyLink = async () => {
-    const url = `${window.location.origin}/v/${id}`;
+    const url = `${window.location.origin}/v/${id}${window.location.hash}`;
     try {
       await navigator.clipboard.writeText(url);
     } catch {

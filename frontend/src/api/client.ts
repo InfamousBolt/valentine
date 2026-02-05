@@ -1,56 +1,43 @@
-import type { ValentineSite, CreateSitePayload, SiteCreatedResponse } from '../types/valentine';
+import type { ValentineSite, CreateSitePayload, SiteCreatedResponse, EncryptedSiteResponse } from '../types/valentine';
+import { generateKey, exportKeyToBase64Url, importKeyFromBase64Url, encrypt, decrypt } from '../utils/crypto';
 
 const API_BASE = import.meta.env.VITE_API_URL || '/api';
 
-function toSnakeCase(payload: CreateSitePayload): Record<string, unknown> {
-  return {
-    creator_name: payload.creatorName,
-    partner_name: payload.partnerName,
-    love_message: payload.loveMessage,
-    photo_base64: payload.photoBase64,
-    photo_caption: payload.photoCaption,
-    how_we_met: payload.howWeMet,
-    favorite_memory: payload.favoriteMemory,
-    reasons: payload.reasons,
-    song_url: payload.songUrl,
-    pet_name: payload.petName,
-    secret_message: payload.secretMessage,
-  };
-}
-
-function toCamelCase(data: Record<string, unknown>): ValentineSite {
-  return {
-    id: data.id as string,
-    creatorName: data.creator_name as string,
-    partnerName: data.partner_name as string,
-    loveMessage: data.love_message as string,
-    photoBase64: data.photo_base64 as string | undefined,
-    photoCaption: data.photo_caption as string | undefined,
-    howWeMet: data.how_we_met as string | undefined,
-    favoriteMemory: data.favorite_memory as string | undefined,
-    reasons: data.reasons as string[] | undefined,
-    songUrl: data.song_url as string | undefined,
-    petName: data.pet_name as string | undefined,
-    secretMessage: data.secret_message as string | undefined,
-    viewCount: data.view_count as number,
-    accepted: data.accepted as boolean,
-  };
-}
-
 export async function createSite(payload: CreateSitePayload): Promise<SiteCreatedResponse> {
+  const key = await generateKey();
+  const keyFragment = await exportKeyToBase64Url(key);
+
+  const plaintext = JSON.stringify({
+    creatorName: payload.creatorName,
+    partnerName: payload.partnerName,
+    loveMessage: payload.loveMessage,
+    photoBase64: payload.photoBase64,
+    photoCaption: payload.photoCaption,
+    howWeMet: payload.howWeMet,
+    favoriteMemory: payload.favoriteMemory,
+    reasons: payload.reasons,
+    songUrl: payload.songUrl,
+    petName: payload.petName,
+    secretMessage: payload.secretMessage,
+  });
+
+  const { encryptedData, iv } = await encrypt(key, plaintext);
+
   const res = await fetch(`${API_BASE}/sites`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(toSnakeCase(payload)),
+    body: JSON.stringify({ encrypted_data: encryptedData, iv }),
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({ detail: 'Failed to create site' }));
     throw new Error(err.detail || 'Failed to create site');
   }
-  return res.json();
+
+  const data: SiteCreatedResponse = await res.json();
+  return { ...data, url: `${data.url}#${keyFragment}` };
 }
 
-export async function getSite(id: string): Promise<ValentineSite> {
+export async function getSite(id: string, keyFragment: string): Promise<ValentineSite> {
   const res = await fetch(`${API_BASE}/sites/${encodeURIComponent(id)}`);
   if (res.status === 410) {
     throw new Error('expired');
@@ -58,8 +45,28 @@ export async function getSite(id: string): Promise<ValentineSite> {
   if (!res.ok) {
     throw new Error('Site not found');
   }
-  const data = await res.json();
-  return toCamelCase(data);
+
+  const data: EncryptedSiteResponse = await res.json();
+  const key = await importKeyFromBase64Url(keyFragment);
+  const plaintext = await decrypt(key, data.encrypted_data, data.iv);
+  const personal = JSON.parse(plaintext);
+
+  return {
+    id: data.id,
+    creatorName: personal.creatorName,
+    partnerName: personal.partnerName,
+    loveMessage: personal.loveMessage,
+    photoBase64: personal.photoBase64,
+    photoCaption: personal.photoCaption,
+    howWeMet: personal.howWeMet,
+    favoriteMemory: personal.favoriteMemory,
+    reasons: personal.reasons,
+    songUrl: personal.songUrl,
+    petName: personal.petName,
+    secretMessage: personal.secretMessage,
+    viewCount: data.view_count,
+    accepted: data.accepted,
+  };
 }
 
 export async function recordView(id: string): Promise<void> {

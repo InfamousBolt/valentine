@@ -46,7 +46,12 @@ export default function ViewerPage({ isPreview = false }: ViewerPageProps) {
 
   useEffect(() => {
     if (!id) return;
-    getSite(id)
+    const keyFragment = window.location.hash.substring(1);
+    if (!keyFragment) {
+      setPhase('error');
+      return;
+    }
+    getSite(id, keyFragment)
       .then((data) => {
         setSite(data);
         setPhase('downloading');
