@@ -1,0 +1,198 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Press+Start+2P&family=Inter:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  /* Original colors (used by viewer pages) */
+  --color-paper-cream: #FDF6E3;
+  --color-paper-craft: #E8D4B8;
+  --color-paper-lined: #F5F5F5;
+  --color-pixel-pink: #FF6B9D;
+  --color-pixel-red: #E63946;
+  --color-pixel-coral: #FF8A80;
+  --color-ink-dark: #2D3436;
+  --color-ink-faded: #636E72;
+  --color-handwritten: #4A4A4A;
+  --color-button-yes: #4CAF50;
+  --color-button-no: #E57373;
+  --color-tape-yellow: #FFF59D;
+
+  /* Retro theme colors */
+  --color-neon-magenta: #FF00FF;
+  --color-neon-pink: #FF69B4;
+  --color-neon-green: #00FF41;
+  --color-neon-cyan: #00FFFF;
+  --color-retro-dark: #0a0a1a;
+  --color-retro-panel: #1a1a2e;
+  --color-xp-blue: #0058e6;
+  --color-win-gray: #C0C0C0;
+
+  --font-handwritten: 'Caveat', cursive;
+  --font-pixel: 'Press Start 2P', cursive;
+  --font-body: 'Inter', sans-serif;
+}
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html, body, #root {
+    height: 100%;
+    width: 100%;
+  }
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-ink-dark);
+  background-color: var(--color-paper-cream);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.font-handwritten {
+  font-family: var(--font-handwritten);
+}
+
+.font-pixel {
+  font-family: var(--font-pixel);
+  font-size: 0.75rem;
+}
+
+/* Retro scrollbar */
+::-webkit-scrollbar {
+  width: 16px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a2e;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-win-gray);
+  border: 2px outset #ddd;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d0d0d0;
+}
+
+/* Snap scroll container */
+.snap-container {
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+  height: 100vh;
+}
+
+.snap-page {
+  scroll-snap-align: start;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Retro form inputs */
+.retro-input {
+  background: var(--color-retro-panel);
+  border: 2px inset #555;
+  color: #fff;
+  padding: 10px 14px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  outline: none;
+  width: 100%;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.retro-input:focus {
+  border-color: var(--color-neon-magenta);
+  box-shadow: 0 0 10px rgba(255, 0, 255, 0.25);
+}
+
+.retro-input::placeholder {
+  color: #555;
+}
+
+.retro-textarea {
+  background: var(--color-retro-panel);
+  border: 2px inset #555;
+  color: #fff;
+  padding: 10px 14px;
+  font-family: var(--font-handwritten);
+  font-size: 1.25rem;
+  outline: none;
+  width: 100%;
+  resize: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.retro-textarea:focus {
+  border-color: var(--color-neon-magenta);
+  box-shadow: 0 0 10px rgba(255, 0, 255, 0.25);
+}
+
+.retro-textarea::placeholder {
+  color: #555;
+}
+
+/* XP-style buttons */
+.xp-btn {
+  background: var(--color-win-gray);
+  border: 2px outset #eee;
+  padding: 8px 20px;
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  cursor: pointer;
+  color: #000;
+  transition: background 0.1s;
+}
+
+.xp-btn:active {
+  border-style: inset;
+}
+
+.xp-btn:hover {
+  background: #d4d4d4;
+}
+
+.xp-btn-primary {
+  background: linear-gradient(180deg, #ff8ec4 0%, #ff6b9d 50%, #e63946 100%);
+  border: 2px outset #ffb4d6;
+  padding: 8px 24px;
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  cursor: pointer;
+  color: #fff;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+  transition: background 0.1s;
+}
+
+.xp-btn-primary:hover {
+  background: linear-gradient(180deg, #ffa4d4 0%, #ff85b1 50%, #ef4f5c 100%);
+}
+
+.xp-btn-primary:active {
+  border-style: inset;
+}
+
+.xp-btn-primary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Neon text glow effects */
+.neon-glow-pink {
+  text-shadow: 0 0 7px #ff6b9d, 0 0 10px #ff6b9d, 0 0 21px #ff6b9d, 0 0 42px #e63946;
+}
+
+.neon-glow-magenta {
+  text-shadow: 0 0 7px #ff00ff, 0 0 10px #ff00ff, 0 0 21px #ff00ff;
+}
+
+.neon-glow-green {
+  text-shadow: 0 0 7px #00ff41, 0 0 10px #00ff41, 0 0 21px #00ff41;
+}

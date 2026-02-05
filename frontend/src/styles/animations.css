@@ -1,0 +1,192 @@
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-20px); }
+  60% { transform: translateY(-10px); }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes dropIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-100px) rotate(-5deg);
+  }
+  60% {
+    transform: translateY(10px) rotate(2deg);
+  }
+  80% {
+    transform: translateY(-5px) rotate(-1deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+@keyframes sealCrack {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2) rotate(10deg); }
+  100% { transform: scale(0) rotate(45deg); opacity: 0; }
+}
+
+@keyframes flapOpen {
+  0% { transform: rotateX(0deg); }
+  100% { transform: rotateX(180deg); }
+}
+
+@keyframes slideOut {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-120%); }
+}
+
+@keyframes typewriterCursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Retro animations */
+@keyframes discoRotate {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(360deg); }
+}
+
+@keyframes starTwinkle {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+
+@keyframes neonFlicker {
+  0%, 100% { opacity: 1; }
+  92% { opacity: 1; }
+  93% { opacity: 0.4; }
+  94% { opacity: 1; }
+  96% { opacity: 0.6; }
+  97% { opacity: 1; }
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(110vh) rotate(0deg);
+    opacity: 0;
+  }
+  5% { opacity: 0.6; }
+  90% { opacity: 0.6; }
+  100% {
+    transform: translateY(-10vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes marqueeScroll {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-200%); }
+}
+
+@keyframes lightRay {
+  0% { transform: rotate(0deg); opacity: 0.3; }
+  25% { opacity: 0.6; }
+  50% { transform: rotate(180deg); opacity: 0.3; }
+  75% { opacity: 0.6; }
+  100% { transform: rotate(360deg); opacity: 0.3; }
+}
+
+@keyframes discoColorShift {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+.animate-float { animation: float 3s ease-in-out infinite; }
+.animate-pulse-heart { animation: pulse 1.5s ease-in-out infinite; }
+.animate-bounce-in { animation: bounce 0.6s ease-out; }
+.animate-spin-slow { animation: spin 3s linear infinite; }
+.animate-fade-in-up { animation: fadeInUp 0.6s ease-out forwards; }
+.animate-shake { animation: shake 0.5s ease-in-out; }
+.animate-sparkle { animation: sparkle 1.5s ease-in-out infinite; }
+.animate-drop-in { animation: dropIn 0.8s ease-out forwards; }
+.animate-seal-crack { animation: sealCrack 0.5s ease-in forwards; }
+.animate-flap-open { animation: flapOpen 0.6s ease-in forwards; transform-origin: top center; }
+.animate-slide-out { animation: slideOut 0.8s ease-in forwards; }
+.animate-cursor { animation: typewriterCursor 0.7s infinite; }
+
+/* Retro animation classes */
+.animate-disco { animation: discoRotate 10s linear infinite; }
+.animate-twinkle { animation: starTwinkle 3s ease-in-out infinite; }
+.animate-neon-flicker { animation: neonFlicker 5s ease-in-out infinite; }
+.animate-float-up { animation: floatUp 10s linear infinite; }
+.animate-marquee { animation: marqueeScroll 25s linear infinite; }
+.animate-light-ray { animation: lightRay 6s linear infinite; }
+.animate-disco-colors { animation: discoColorShift 8s linear infinite; }
+
+/* Gentle bounce for scroll indicator */
+@keyframes bounceGentle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+.animate-bounce-gentle { animation: bounceGentle 1.5s ease-in-out infinite; }
+
+/* Slide transitions for wizard steps */
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.animate-slide-in-right { animation: slideInRight 0.3s ease-out forwards; }
+.animate-slide-in-left { animation: slideInLeft 0.3s ease-out forwards; }
+
+/* Shimmer effect for envelope seal */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Loading dots */
+@keyframes loadingDot {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40% { transform: scale(1); opacity: 1; }
+}
+.animate-loading-dot { animation: loadingDot 1.4s ease-in-out infinite; }
+
+/* Scale in */
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+.animate-scale-in { animation: scaleIn 0.4s ease-out forwards; }
